@@ -19,6 +19,7 @@ const help = require('../lib/help');
 const chatdown = require('../lib/index');
 const txtfile = require('read-text-file');
 const glob = require('glob');
+const intercept = require("intercept-stdout");
 
 /**
  * Retrieves the content to be parsed from a file if
@@ -110,6 +111,12 @@ async function processFiles(inputDir, outputDir) {
  */
 async function runProgram() {
     const args = minimist(process.argv.slice(2));
+
+    if (args.prefix) {
+        const unhook_intercept = intercept(function(txt) {
+            return `[${pkg.name}]\n${txt}`;
+        });
+    }
 
     if (args.version || args.v) {
         return process.stdout.write(require(path.join(__dirname, '../package.json')).version);
