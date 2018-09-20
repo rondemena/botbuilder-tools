@@ -32,7 +32,7 @@ const Endpointkeys = require('../lib/api/endpointkeys');
 const Operations = require('../lib/api/operations');
 const Delay = require('await-delay');
 const { ServiceBase } = require('../lib/api/serviceBase');
-
+const intercept = require("intercept-stdout");
 function stdoutAsync(output) { return new Promise((done) => process.stdout.write(output, "utf-8", () => done())); }
 
 let args;
@@ -48,6 +48,12 @@ async function runProgram() {
         argvFragment = ['-h'];
     }
     args = minimist(argvFragment);
+
+    if (args.prefix) {
+        const unhook_intercept = intercept(function(txt) {
+            return `[${pkg.name}]\n${txt}`;
+        });
+    }
 
     if (args['!'] ||
         args.help ||
