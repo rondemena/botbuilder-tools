@@ -5,7 +5,7 @@ const {exec} = require('child_process');
 const luis = require.resolve('../bin/luis');
 const fs = require('fs');
 const specsExtension = '.spec.json';
-
+const mockWrapper = require.resolve('./mockTest.js');
 function runTests(specsDirectory) {
     if (fs.existsSync(specsDirectory)) {
         fs.readdirSync(specsDirectory).filter(specsFile => specsFile.endsWith(specsExtension)).forEach(file => {
@@ -23,7 +23,10 @@ function runTests(specsDirectory) {
 
 function executeTestGroup (tests) {
     tests.forEach((test) => {
-        let command = `node ${luis}  ${test.args}`;
+        let command = "node ";
+        if(test.responseMockFile != undefined)
+            command += `${mockWrapper} ${require.resolve(test.responseMockFile)} `;
+        command += `${luis} ${test.args}`;
 
         if(test.resource) {
             command = getResources(test, command); }

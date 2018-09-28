@@ -5,7 +5,8 @@
 			"args": "add app --in %s --authoringKey dummyKey --region westus",
 			"stdout": "",
 			"stderr": "Access denied due to invalid subscription key.",
-			"resource": ["ApplicationCreateObject.json"]
+			"resource": ["ApplicationCreateObject.json"],
+			"responseMockFile": "./testdata/withaddverbandapplication.mockdata.json"
 		},
 		{
 			"title": "and 'closedlist'",
