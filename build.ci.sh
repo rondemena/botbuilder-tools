@@ -15,6 +15,7 @@ main() {
         (
             set -e
             npm install
+            npm install -g typescript
             cd packages/LUISGen/tests/LUISGenTestJS/
             npm install
             npm run build
